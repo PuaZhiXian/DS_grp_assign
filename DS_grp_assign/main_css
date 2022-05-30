@@ -1,0 +1,115 @@
+video{
+  margin  =0px;
+  padding =0px;
+
+}
+h2 {
+  background-color :red;
+}
+.input_bar {
+  position :absolute;
+  top:50%;
+  left: 50%;
+  transform:translate(-50%,-50%);
+  background-color: gray;
+  padding : 20px;
+}
+.a {
+  padding-left:  50px;
+}
+.container{
+  position :relative;
+  text-align: center;
+  color:black;
+  margin :0;
+  width: 100%;
+}
+ul.label{
+  list-style-type: none
+  padding : 5px;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+li{
+    list-style-type: none;
+}
+#airasia{
+    width: 35px;
+    height: 35px;
+}
+.ul_label li{
+    display: inline;
+}
+.ul_data li{
+    display:inline;
+}
+.result{
+    border:solid;
+    border-radius: 25px;
+    border-color: darkblue;
+    width:70%;
+    margin:auto;
+    overflow: auto;
+    margin-top:15px;
+}
+.left_div{
+    float: left;
+}
+.right_div{
+    float: right;
+    padding-right:50px;
+    padding-bottom: 25px;
+    padding-top: 25px;
+    padding-left:50px;
+    background-color: red;
+    align-items: center;
+    justify-content: center;
+}
+#time{
+    margin-left:50px;
+    font-size: 14px;
+}
+#period{
+    margin-left:150px;
+    font-size: 14px;
+}
+p{
+    font-size: 20px;
+}
+button{
+    background-color: blue;
+    width: 70px;
+    border-radius: 25px;
+    height: 30px;
+}
+#fastest{
+    font-size:10px;
+    color: darkblue;
+    background-color: darkgoldenrod;
+    padding: 8px 10px;
+}
+#cheapest{
+    font-size: 10px;
+    color: darkblue;
+    background-color: darkgoldenrod;
+    padding: 8px 10px;
+}
+.left_top{
+    margin-top:20px;
+}
+.left_middle{
+    margin-top:20px;
+}
+.left_bottom{
+    margin-top:15px;
+    margin-left:40px;
+    font-size:14px;
+}
+
+
+
+
+
+
+
+
