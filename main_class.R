@@ -3,12 +3,12 @@ library(shiny)
 html_result_table <- '<div class="result_table">_html</div>'
 html_result <- '<div class="result">
             <div class="left_div">
-                <div class="left_top">
-                    <ul class="ul_label">
-                        <li id="fastest">Fastest</li>
-                        <li id="cheapest">Cheapest</li>
-                    </ul>
-                </div>
+                <!--<div class="left_top">-->
+                <!--    <ul class="ul_label">-->
+                 <!--       <li id="fastest">Fastest</li> -->
+                  <!--      <li id="cheapest">Cheapest</li> -->
+                  <!--  </ul> -->
+            <!--    </div>  -->
                 <div class="left_middle">
                     <ul class="ul_data">
                         <li id="image">
@@ -185,8 +185,8 @@ server <- function(input, output) {
           Edata$from == origin &
             Edata$to == destination &
             Edata$date == format(des_date, format='%d/%m/%Y')&
-            Edata$price > range_price[1] &
-            Edata$price < range_price[2]
+            strtoi(Edata$price) > strtoi(range_price[1]) &
+            strtoi(Edata$price) < strtoi(range_price[2])
         ), ]
         temp_dataset <-
           temp_dataset[which(temp_dataset$airline == airline), ]
@@ -195,8 +195,8 @@ server <- function(input, output) {
           Bdata$from == origin &
             Bdata$to == destination &
             Bdata$date == format(des_date,format='%d/%m/%Y')&
-            Bdata$price > range_price[1] &
-            Bdata$price < range_price[2]
+            strtoi(Bdata$price) > strtoi(range_price[1]) &
+            strtoi(Bdata$price) < strtoi(range_price[2])
         ),]
         temp_dataset <-
           temp_dataset[which(temp_dataset$airline == airline), ]
@@ -214,18 +214,17 @@ server <- function(input, output) {
         temp_dataset <- temp_dataset[order(temp_dataset$arr_time), ]
       }
       result_contain <- ''
-      for (y in 1:nrow(temp_dataset)) {
-        temp <- html_result
-        temp <-
-          gsub('_location', paste(temp_dataset[y,]$from, paste('to', temp_dataset[y,]$to)), temp)
-        temp <- gsub('_price', temp_dataset[y,]$price, temp)
-        temp <- gsub('_period', temp_dataset[y,]$time_taken, temp)
-        temp <-
-          gsub('_time', paste(
-            temp_dataset[y,]$dep_time,
-            paste(' - ', temp_dataset[y,]$arr_time)
-          ), temp)
-        result_contain <- paste(result_contain, temp, sep = ' ')
+      if(nrow(temp_dataset)!=0){
+        for (y in 1:nrow(temp_dataset)) {
+          temp <- html_result
+          temp <-
+            gsub('_location', paste(temp_dataset[y,]$from, paste('to', temp_dataset[y,]$to)), temp)
+          temp <- gsub('_price', temp_dataset[y,]$price, temp)
+          temp <- gsub('_period', temp_dataset[y,]$time_taken, temp)
+          temp <-
+            gsub('_time', paste(temp_dataset[y,]$date, paste(temp_dataset[y,]$dep_time,paste(' - ', temp_dataset[y,]$arr_time))), temp)
+          result_contain <- paste(result_contain, temp, sep = ' ')
+        }
       }
       result_contain <-
         gsub('_html', result_contain, html_result_table)
