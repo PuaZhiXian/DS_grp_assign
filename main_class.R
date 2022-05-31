@@ -88,12 +88,12 @@ ui <- fluidPage(
     sidebarPanel(
       selectInput(
         inputId = "origin",
-        label = "choose a location",
+        label = "From ? ",
         choices = total_origin
       ),
       selectInput(
         inputId = 'destination',
-        label = "choose a location",
+        label = "To ?",
         choices = total_destination
       ),
       dateInput(
@@ -115,7 +115,7 @@ ui <- fluidPage(
       ),
       sliderInput(
         inputId = 'range_price',
-        label = 'Range Price',
+        label = 'Price (RM)',
         value = c(min, max),
         min = min,
         max = max,
