@@ -1,40 +1,43 @@
 library(shiny)
 
+
 html_result_table <- '<div class="result_table">_html</div>'
 html_result <- '<div class="result">
             <div class="left_div">
-                <!--<div class="left_top">-->
-                <!--    <ul class="ul_label">-->
-                 <!--       <li id="fastest">Fastest</li> -->
-                  <!--      <li id="cheapest">Cheapest</li> -->
-                  <!--  </ul> -->
-            <!--    </div>  -->
-                <div class="left_middle">
-                    <ul class="ul_data">
-                        <li id="image">
-                            <img id="airasia" src="_imglink">
-                        </li>
-                        <li id="time">
-                            _time
-                        </li>
-                        <li id="period">
-                            _period
-                        </li>
-                    </ul>
+                <div class="left_top">
+                    <div class="lt_1">
+                        <img id="image" src="_imglink"> 
+                    </div>
+                    <div class="lt_2">
+                        <div class="lt_2_t">
+                            _time   
+                        </div>
+                        <div class="lt_2_b">
+                            _location    
+                        </div>
+                    </div>
+                    <div class="lt_3">
+                        _period    
+                    </div>
                 </div>
                 <div class="left_bottom">
-                    _location
+                    _airline    
                 </div>
             </div>
             <div class="right_div">
-                <p>_price<p>
-                <a href="_airline_website" target="_blank">
-                    <button>
-                        Buy
-                    </button>
-                </a>
+                <div class="right_top">
+                    _price   
+                </div>
+                <div class="right_bottom">
+                    <a href="_airline_website" target="_blank"> 
+                        <button class="button">
+                            View Deal
+                        </button>
+                    </a>
+                </div>
             </div>
-        </div>'
+        </div>
+        '
 Efile <- "D:\\R language\\DS_grp_assign\\economy.csv"
 
 Bfile <- "D:\\R language\\DS_grp_assign\\business.csv"
@@ -47,8 +50,10 @@ Bdata$price <- gsub(',', '', Bdata$price)
 Edata$price <- gsub(',', '', Edata$price)
 colnames(Edata)[1] <- 'date'
 colnames(Bdata)[1] <- 'date'
-min <- min(strtoi(Edata$price))
-max <- max(strtoi(Bdata$price))
+
+
+min <- round(min(strtoi(Edata$price))*0.056, 0) -1
+max <- round(max(strtoi(Bdata$price))*0.056,0)+1
 Edata$price <- strtoi(Edata$price)
 Bdata$price < -strtoi(Bdata$price)
 airline_name <- c("SpiceJet" , "AirAsia"  , "Vistara"  , "GO FIRST"  ,"Indigo"   ,"Air India", "Trujet"   , "StarAir")
@@ -75,92 +80,68 @@ total_origin <- unique(Edata$from)
 total_destination <- unique(Edata$to)
 total_airline <- unique(Edata$airline)
 
+
 ui <- fluidPage(
-  # includeCSS("https://raw.githubusercontent.com/PuaZhiXian/doge_webapplication/main/css_file/login_page_css.css"),
-  
-  includeCSS("D:/R language/Datascience/R/assignment/temp.css"),
-  tabsetPanel(
-    tabPanel(
-      "Main Page ",
-      tags$div(
-        class = "container",
-        HTML(
-          '<video src = "https://video.wixstatic.com/video/11062b_83535061d55d4d798b215a143f3cc140/1080p/mp4/file.mp4"
-              type = "video/mp4" width = "100%""
-              autoplay muted loop></video>'
-        ),
-        div(
-          class = 'input_bar',
-          div(
-            class = 'a',
-            selectInput(
-              inputId = "origin",
-              label = "choose a location",
-              choices = total_origin
-            ),
-            selectInput(
-              inputId = 'destination',
-              label = "choose a location",
-              choices = total_destination
-            ),
-            dateInput(
-              inputId = 'des_date',
-              label = "Date:",
-              format = "dd/mm/yyyy"
-            ),
-            selectInput(
-              inputId = 'type',
-              label = "",
-              choices = c('economy', 'business')
-            ),
-          ),
-          
-        ),
+  #includeCSS("https://raw.githubusercontent.com/PuaZhiXian/DS_grp_assign/main/main.css"),
+  includeCSS("D:/R language/DS_grp_assign/main.css"),
+  sidebarLayout(
+    sidebarPanel(
+      selectInput(
+        inputId = "origin",
+        label = "choose a location",
+        choices = total_origin
       ),
-      fluidRow(
-        column(
-          3,
-          checkboxGroupInput(
-            inputId = 'airline',
-            label = "choose airline",
-            choiceNames = total_airline,
-            choiceValues = total_airline
-          )
-        ),
-        column(
-          3,
-          sliderInput(
-            inputId = 'range_price',
-            label = 'Range Price',
-            value = c(min, max),
-            min = min,
-            max = max,
-            dragRange = TRUE
-          )
-        ),
-        column(
-          3,
-          selectInput(
-            inputId = 'sort_para',
-            label = '',
-            choices = c('Price', 'Time taken', 'Departure time'),
-            width = '150px'
-          )
-        ),
-        
-        column(3, actionButton(
-          inputId = 'sort',
-          label = "sort",
-          width = '100px'
-        ))
+      selectInput(
+        inputId = 'destination',
+        label = "choose a location",
+        choices = total_destination
       ),
-      uiOutput("below_table")
+      dateInput(
+        inputId = 'des_date',
+        label = "Date:",
+        format = "dd/mm/yyyy"
+      ),
+      selectInput(
+        inputId = 'type',
+        label = "",
+        choices = c('economy', 'business')
+      ),
+      checkboxGroupInput(
+        inputId = 'airline',
+        label = "choose airline",
+        choiceNames = total_airline,
+        choiceValues = total_airline,
+        inline=TRUE
+      ),
+      sliderInput(
+        inputId = 'range_price',
+        label = 'Range Price',
+        value = c(min, max),
+        min = min,
+        max = max,
+        dragRange = TRUE
+      ),
+      selectInput(
+        inputId = 'sort_para',
+        label = '',
+        choices = c('Price', 'Time taken', 'Departure time')
+      ),
+      actionButton(
+        inputId = 'sort',
+        label = "sort"
+      )
     ),
-    tabPanel("tab 2", "contents"),
-    tabPanel("tab 3", "contents")
+    mainPanel(
+      tabsetPanel(
+        tabPanel("Main Page", uiOutput("below_table")),
+        tabPanel("tab 2", "contents"),
+        tabPanel("tab 3", "contents")
+      )
+    )
   )
 )
 
+# Server logic
 server <- function(input, output) {
   observeEvent(input$sort,  {
     output$below_table <- renderUI({
@@ -177,8 +158,8 @@ server <- function(input, output) {
         temp_dataset <- temp_dataset[which(temp_dataset$to == destination),]
         temp_dataset <- temp_dataset[which(temp_dataset$date == format(des_date, format="%d/%m/%Y")),]
         print(format(des_date, format="%d/%m/%Y"))
-        temp_dataset <- temp_dataset[which(strtoi(temp_dataset$price) > strtoi(range_price[1])),]
-        temp_dataset <- temp_dataset[which(strtoi(temp_dataset$price) < strtoi(range_price[2])),]
+        temp_dataset <- temp_dataset[which(strtoi(temp_dataset$price) > strtoi(range_price[1])/0.056 ),]
+        temp_dataset <- temp_dataset[which(strtoi(temp_dataset$price) < strtoi(range_price[2])/0.056 ),]
         temp_dataset <-temp_dataset[which(temp_dataset$airline == airline), ]
         
       } else{
@@ -186,8 +167,8 @@ server <- function(input, output) {
         temp_dataset <- temp_dataset[which(temp_dataset$to == destination),]
         temp_dataset <- temp_dataset[which(temp_dataset$date == format(des_date, format="%d/%m/%Y")),]
         print(format(des_date, format="%d/%m/%Y"))
-        temp_dataset <- temp_dataset[which(strtoi(temp_dataset$price) > strtoi(range_price[1])),]
-        temp_dataset <- temp_dataset[which(strtoi(temp_dataset$price) < strtoi(range_price[2])),]
+        temp_dataset <- temp_dataset[which(strtoi(temp_dataset$price) > strtoi(range_price[1])/0.056),]
+        temp_dataset <- temp_dataset[which(strtoi(temp_dataset$price) < strtoi(range_price[2])/0.056),]
         temp_dataset <-temp_dataset[which(temp_dataset$airline == airline), ]
       }
       if (sort_para == 'Price') {
@@ -204,12 +185,13 @@ server <- function(input, output) {
         for (y in 1:nrow(temp_dataset)) {
           temp <- html_result
           temp <-
-            gsub('_location', paste(temp_dataset[y,]$from, paste('to', temp_dataset[y,]$to)), temp)
-          temp <- gsub('_price',paste('RM',temp_dataset[y,]$price) , temp)
-          temp <- gsub('_period', paste(as.integer(temp_dataset[y,]$time_taken/60), paste("h", paste(as.integer(temp_dataset[y,]$time_taken%%60),'m'))), temp)
+            gsub('_location', paste(temp_dataset[y,]$from, paste('-', temp_dataset[y,]$to)), temp)
+          temp <- gsub('_price',paste('RM',formatC(round(strtoi(temp_dataset[y,]$price)*0.056,2),2,format='f')) , temp)
+          temp <- gsub('_period', paste0(as.integer(temp_dataset[y,]$time_taken/60), paste("h", paste0(as.integer(temp_dataset[y,]$time_taken%%60),'m'))), temp)
           temp <-
-            gsub('_time', paste(temp_dataset[y,]$date, paste(temp_dataset[y,]$dep_time,paste(' - ', temp_dataset[y,]$arr_time))), temp)
+            gsub('_time', paste(temp_dataset[y,]$dep_time,paste(' - ', temp_dataset[y,]$arr_time)), temp)
           temp <- gsub('_imglink',img_info[which(img_info$airline_name == temp_dataset[y,]$airline),]$image,temp)
+          temp <- gsub('_airline',temp_dataset[y,]$airline,temp)
           temp <- gsub('_airline_website',img_info[which(img_info$airline_name==temp_dataset[y,]$airline),]$web_link,temp)
           result_contain <- paste(result_contain, temp, sep = ' ')
         }
@@ -219,10 +201,9 @@ server <- function(input, output) {
       HTML(result_contain)
       
     })
-    
-    
-    
   })
 }
 
-shinyApp(ui = ui, server = server)
+# Complete app with UI and server components
+shinyApp(ui, server)
+
