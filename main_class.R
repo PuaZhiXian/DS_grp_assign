@@ -191,8 +191,9 @@ server <- function(input, output) {
           temp <-
             gsub('_time', paste(temp_dataset[y,]$dep_time,paste(' - ', temp_dataset[y,]$arr_time)), temp)
           temp <- gsub('_imglink',img_info[which(img_info$airline_name == temp_dataset[y,]$airline),]$image,temp)
-          temp <- gsub('_airline',temp_dataset[y,]$airline,temp)
           temp <- gsub('_airline_website',img_info[which(img_info$airline_name==temp_dataset[y,]$airline),]$web_link,temp)
+          temp <- gsub('_airline',temp_dataset[y,]$airline,temp)
+          
           result_contain <- paste(result_contain, temp, sep = ' ')
         }
       }
